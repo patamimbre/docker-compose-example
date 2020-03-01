@@ -1,0 +1,48 @@
+version: "3.7"
+
+services:
+  nginx:
+    image: nginx
+    restart: always
+    volumes:
+      - ./conf.d:/etc/nginx/
+    depends_on:
+      - server
+      - web
+    ports:
+      - 80:80
+  db:
+    image: mongo
+    environment:
+      MONGO_INITDB_DATABASE: tasks
+    ports:
+      - 27017:27017
+    volumes:
+      - db_data:/data/db
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    volumes:
+      - ./server/src:/app/src
+    ports:
+      - 5000:5000
+    environment:
+      DB_URL: db
+      DB_PORT: 27017
+
+  web:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    volumes:
+      - ./client/src:/app/src
+    ports:
+      - 3000:3000
+
+volumes:
+  db_data:
+

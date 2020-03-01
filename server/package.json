@@ -1,0 +1,20 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "backend app",
+  "main": "./src/server.js",
+  "scripts": {
+    "start": "nodemon ./src/server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.5",
+    "express": "^4.16.2",
+    "method-override": "^3.0.0",
+    "mongoose": "^4.13.9",
+    "nodemon": "^1.18.6"
+  },
+  "engines": {
+    "node": "8.9.4"
+  }
+}
