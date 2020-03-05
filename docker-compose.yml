@@ -3,15 +3,31 @@ version: "3.7"
 services:
   nginx:
     # 1. Set nginx microservice
+    image: nginx
     # 2. Set restart policy -> always
+    restart: always
     # 3. Link conf.d local folder with /etc/nginx
+    volumes:
+      - ./conf.d:/etc/nginx
     # 4. Expose ports
+    ports:
+      - 80:80
     # 5. Run this microservice after setting up server and web services (depends_on)
+    depends_on:
+      - web
+
   db:
     # 1. Set mongo microservice
+    image: mongo
     # 2. Set MONGO_INITDB_DATABASE -> tasks
+    environment: 
+      MONGO_INITDB_DATABASE: tasks
     # 3. Expose mongo ports
+    ports: 
+      - 27017:27017
     # 4. Link created volume with /data/db folder
+    volumes: 
+      - db_data:/data/db
   server:
     build:
       context: ./server
@@ -34,7 +50,9 @@ services:
       - ./client/src:/app/src
     ports:
       - 3000:3000
+    depends_on: 
+      - server
 
 volumes:
-  db_data:
+  db_data: 
 
